@@ -18,3 +18,5 @@ Route::get('/', function () {
 Route::get('hello', function () {
     return 'Welcome to Xiao hu!';
 });
+
+Route::get('showUsers', 'UsersController@index');
