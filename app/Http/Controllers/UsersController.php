@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class UsersController extends Controller
 {
-    public function index() {
-      return view('users.list');
+    /**
+     * 显示用户列表
+     *
+     * @return Response
+     */
+    public function index()
+    {
+      $users = DB::table('user') -> get();
+
+      return view('users.list', ['users' => $users]);
     }
 }
