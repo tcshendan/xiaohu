@@ -19,4 +19,7 @@ Route::get('hello', function () {
     return 'Welcome to Xiao hu!';
 });
 
-Route::get('showUsers', 'UsersController@index');
+Route::get('user_index', 'UsersController@index')->name('user.index');
+
+Route::get('user_create', 'UsersController@create')->name('user.add');
+Route::post('user_store', 'UsersController@store')->name('user.store');

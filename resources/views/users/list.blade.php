@@ -16,6 +16,9 @@
   </head>
   <body>
     <div class="list">
+      <div style="margin: 15px 0">
+        <a href="{{route('user.add')}}" class="btn btn-primary btn-sm">+新增</a>
+      </div>
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
