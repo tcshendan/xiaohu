@@ -94,7 +94,7 @@
               success: function(data) {
                 if(data.code == 200) {
                   alert("操作成功");
-                  window.location.href="{{route('user.index')}}"
+                  window.location.href="{{route('user.index')}}";
                 } else {
                   alert(data.msg);
                 }

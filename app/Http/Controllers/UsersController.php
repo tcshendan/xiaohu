@@ -16,7 +16,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-      $users = DB::table('user') -> get();
+      $users = DB::table('user')->get();
 
       return view('users.list', ['users'=>$users]);
     }
@@ -57,7 +57,7 @@ class UsersController extends Controller
       }
 
       //存入数据库
-      $bool = DB::table('user') -> insert([
+      $bool = DB::table('user')->insert([
         'name'=>$input['name'],
         'password'=>bcrypt($input['password']),
         'email'=>$input['email'],
@@ -70,6 +70,12 @@ class UsersController extends Controller
           'msg'=>'新增用户成功'
         ]);
       }
+      else {
+        return response()->json([
+          'code'=>-1,
+          'msg'=>'新增用户失败'
+        ]);
+      }
     }
 
     /**
@@ -78,8 +84,21 @@ class UsersController extends Controller
      * @return Response
      */
     public function delete(Request $request) {
-      return response()->json([
-        'msg'=>'删除用户操作'
-      ]);
+      $data = $request->all();
+      //var_dump($data['id']);
+
+      $bool = DB::table('user')->where('id', '=', $data['id'])->delete();
+      if($bool) {
+        return response()->json([
+          'code'=>200,
+          'msg'=>'删除用户成功'
+        ]);
+      }
+      else {
+        return response()->json([
+          'code'=>-1,
+          'msg'=>'删除用户失败'
+        ]);
+      }
     }
 }

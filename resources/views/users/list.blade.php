@@ -61,10 +61,15 @@
           $.ajax({
             url: "user_delete",
             type: "post",
-            data: {"_token": "jCgj3if6ljDKbOcS3z5fAiL1VHXGJ2k76DvuHXsR", "id": $(this).attr('data-id')},
+            data: {"_token": "{{ csrf_token() }}", "id": $(this).attr('data-id')},
             dataType: "json",
             success: function(data) {
-              console.log(data);
+              if(data.code == 200) {
+                alert('删除成功');
+                window.location.href="{{route('user.index')}}";
+              } else {
+                alert(data.msg);
+              }
             }
           });
         }
