@@ -23,3 +23,5 @@ Route::get('user_index', 'UsersController@index')->name('user.index');
 
 Route::get('user_create', 'UsersController@create')->name('user.add');
 Route::post('user_store', 'UsersController@store')->name('user.store');
+
+Route::post('user_delete', 'UsersController@delete')->name('user.delete');

@@ -71,4 +71,15 @@ class UsersController extends Controller
         ]);
       }
     }
+
+    /**
+     * 删除用户
+     * @param  Request $request
+     * @return Response
+     */
+    public function delete(Request $request) {
+      return response()->json([
+        'msg'=>'删除用户操作'
+      ]);
+    }
 }

@@ -12,6 +12,9 @@
       .list {
         padding: 20px;
       }
+      table tr th, table tr td {
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -28,6 +31,7 @@
             <th>邮箱</th>
             <th>创建时间</th>
             <th>更新时间</th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -40,11 +44,31 @@
               <td>{{$item->email}}</td>
               <td>{{$item->created_at}}</td>
               <td>{{$item->updated_at}}</td>
+              <td>
+                <a href="javascript:;" class="btn btn-primary btn-sm j-delete-item" data-id="{{$item->id}}">删除</a>
+              </td>
             </tr>
             @endforeach
           @endif
         </tbody>
       </table>
     </div>
+
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(".j-delete-item").click(function() {
+        if(confirm("确定要删除当前用户吗?")) {
+          $.ajax({
+            url: "user_delete",
+            type: "post",
+            data: {"_token": "jCgj3if6ljDKbOcS3z5fAiL1VHXGJ2k76DvuHXsR", "id": $(this).attr('data-id')},
+            dataType: "json",
+            success: function(data) {
+              console.log(data);
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
