@@ -33,7 +33,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-5">
-          <form class="add-form">
+          <form class="add-form" action="javascript:;">
             {{csrf_field()}}
             <fieldset>
               <legend>新增用户</legend>
@@ -92,7 +92,12 @@
               data: $(".add-form").serialize(),
               dataType: "json",
               success: function(data) {
-                console.log(data);
+                if(data.code == 200) {
+                  alert("操作成功");
+                  window.location.href="{{route('user.index')}}"
+                } else {
+                  alert(data.msg);
+                }
               }
             });
           }

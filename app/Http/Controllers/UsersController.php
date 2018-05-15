@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UsersController extends Controller
 {
@@ -28,13 +29,46 @@ class UsersController extends Controller
     }
 
     /**
-     * 新增用户-存入数据库
+     * 存储新增用户
+     * @param Request $request
+     * @return Response
      *
      */
     public function store(Request $request) {
-      return response()->json([
-        'code'=>200,
-        'msg'=>'保存成功'
+      $input = $request->all();
+
+      if(mb_strlen($input['name']) == 0) {
+        return response()->json([
+          'code'=>10008,
+          'msg'=>'用户名不能为空'
+        ]);
+      }
+      if(mb_strlen($input['password']) == 0) {
+        return response()->json([
+          'code'=>10008,
+          'msg'=>'密码不能为空'
+        ]);
+      }
+      if(mb_strlen($input['email']) == 0) {
+        return response()->json([
+          'code'=>10008,
+          'msg'=>'email不能为空'
+        ]);
+      }
+
+      //存入数据库
+      $bool = DB::table('user') -> insert([
+        'name'=>$input['name'],
+        'password'=>bcrypt($input['password']),
+        'email'=>$input['email'],
+        'created_at'=>date('Y-m-d H:i:s'),
+        'updated_at'=>date('Y-m-d H:i:s')
       ]);
+      if($bool) {
+        return response()->json([
+          'code'=>200,
+          'msg'=>'新增用户成功'
+        ]);
+      }
     }
 }
