@@ -45,7 +45,8 @@
               <td>{{$item->created_at}}</td>
               <td>{{$item->updated_at}}</td>
               <td>
-                <a href="javascript:;" class="btn btn-primary btn-sm j-delete-item" data-id="{{$item->id}}">删除</a>
+                <a href="{{route('user.edit', ['id'=>$item->id])}}" class="btn btn-primary btn-sm">编辑</a>
+                <a href="javascript:;" class="btn btn-danger btn-sm j-delete-item" data-id="{{$item->id}}">删除</a>
               </td>
             </tr>
             @endforeach

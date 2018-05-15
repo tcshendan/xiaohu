@@ -23,6 +23,8 @@ class UsersController extends Controller
 
     /**
      * 显示新增用户页面
+     *
+     * @return Response
      */
     public function create() {
       return view('users.add');
@@ -55,8 +57,7 @@ class UsersController extends Controller
           'msg'=>'email不能为空'
         ]);
       }
-
-      //存入数据库
+      
       $bool = DB::table('user')->insert([
         'name'=>$input['name'],
         'password'=>bcrypt($input['password']),
@@ -76,6 +77,19 @@ class UsersController extends Controller
           'msg'=>'新增用户失败'
         ]);
       }
+    }
+
+    /**
+     * 显示修改用户页面
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Request $request) {
+      $id = $request->route('id');
+
+      $user = DB::table('user')->where('id', $id)->first();
+
+      return view('users.edit', ['user'=>$user]);
     }
 
     /**
