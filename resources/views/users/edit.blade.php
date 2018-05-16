@@ -33,7 +33,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-5">
-          <form class="update-form" action="javascript:;">
+          <form class="update-form">
             {{csrf_field()}}
             <input type="hidden" name="id" value="{{$user->id}}">
             <fieldset>
@@ -61,6 +61,48 @@
     <script src="https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-validate/1.17.0/localization/messages_zh.js"></script>
     <script type="text/javascript">
+      $(".update-form").validate({
+        rules: {
+          name: {
+            required: true
+          },
+          password: {
+            required: true
+          },
+          email: {
+            required: true,
+            email: true
+          }
+        },
+        messages: {
+          name: {
+            required: "请输入用户名"
+          },
+          password: {
+            required: "请输入密码"
+          },
+          email: {
+            required: "请输入邮箱",
+            email: "请输入正确的邮箱格式"
+          }
+        },
+        submitHandler: function() {
+          $.ajax({
+            url: "/user_update",
+            type: "post",
+            data: $(".update-form").serialize(),
+            dataType: "json",
+            success: function(data) {
+              if(data.code == 200) {
+                alert("操作成功");
+                window.location.href="{{route('user.index')}}";
+              } else {
+                alert(data.msg);
+              }
+            }
+          });
+        }
+      });
     </script>
   </body>
 </html>

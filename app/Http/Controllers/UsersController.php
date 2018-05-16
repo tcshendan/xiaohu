@@ -57,7 +57,7 @@ class UsersController extends Controller
           'msg'=>'email不能为空'
         ]);
       }
-      
+
       $bool = DB::table('user')->insert([
         'name'=>$input['name'],
         'password'=>bcrypt($input['password']),
@@ -90,6 +90,34 @@ class UsersController extends Controller
       $user = DB::table('user')->where('id', $id)->first();
 
       return view('users.edit', ['user'=>$user]);
+    }
+
+    /**
+     * 修改用户
+     * @param  Request $request
+     * @return Response
+     */
+    public function update(Request $request) {
+      $input = $request->all();
+
+      $bool = DB::table('user')->where('id', $input['id'])->update([
+        'name'=>$input['name'],
+        'password'=>$input['password'],
+        'email'=>$input['email'],
+        'updated_at'=>date('Y-m-d H:i:s')
+      ]);
+      if($bool) {
+        return response()->json([
+          'code'=>200,
+          'msg'=>'修改用户成功'
+        ]);
+      }
+      else {
+        return response()->json([
+          'code'=>-1,
+          'msg'=>'修改用户失败'
+        ]);
+      }
     }
 
     /**
