@@ -58,6 +58,7 @@ class UsersController extends Controller
         ]);
       }
 
+      date_default_timezone_set('PRC');
       $bool = DB::table('user')->insert([
         'name'=>$input['name'],
         'password'=>bcrypt($input['password']),
@@ -100,6 +101,7 @@ class UsersController extends Controller
     public function update(Request $request) {
       $input = $request->all();
 
+      date_default_timezone_set('PRC');
       $bool = DB::table('user')->where('id', $input['id'])->update([
         'name'=>$input['name'],
         'password'=>$input['password'],

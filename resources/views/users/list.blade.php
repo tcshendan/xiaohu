@@ -36,9 +36,9 @@
         </thead>
         <tbody>
           @if(!$users->isEmpty())
-            @foreach($users as $item)
+            @foreach($users as $index=>$item)
             <tr>
-              <td>{{$item->id}}</td>
+              <td>{{$index+1}}</td>
               <td>{{$item->name}}</td>
               <td>{{$item->password}}</td>
               <td>{{$item->email}}</td>
