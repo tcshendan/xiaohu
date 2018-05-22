@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Tool\Helper;
 
 class UsersController extends Controller
 {
@@ -17,9 +18,21 @@ class UsersController extends Controller
      */
     public function index()
     {
+      /**
+       * DB facade
+       */
       //$users = DB::select('select * from user');
+
+      /**
+       * 查询构造器
+       */
       //$users = DB::table('user')->get();
+
+      /**
+       * Eloquent ORM
+       */
       $users = User::all();
+
       return view('users.list', ['users'=>$users]);
     }
 
@@ -60,7 +73,28 @@ class UsersController extends Controller
         ]);
       }
 
-      date_default_timezone_set('PRC');
+      /**
+       * DB facade
+       */
+      // date_default_timezone_set('PRC');
+      // $bool = DB::insert('insert into user (name,password,email,created_at,updated_at) values(?,?,?,?,?)',
+      //     [$input['name'],$input['password'],$input['email'],date('Y-m-d H:i:s'),date('Y-m-d H:i:s')]);
+      // if($bool) {
+      //   return response()->json([
+      //     'code'=>200,
+      //     'msg'=>'新增用户成功'
+      //   ]);
+      // }
+      // else {
+      //   return response()->json([
+      //     'code'=>-1,
+      //     'msg'=>'新增用户失败'
+      //   ]);
+      // }
+
+      /**
+       * 查询构造器
+       */
       // $bool = DB::table('user')->insert([
       //   'name'=>$input['name'],
       //   'password'=>bcrypt($input['password']),
@@ -80,6 +114,10 @@ class UsersController extends Controller
       //     'msg'=>'新增用户失败'
       //   ]);
       // }
+
+      /**
+       * Eloquent ORM
+       */
       try {
         DB::beginTransaction();
 
@@ -112,7 +150,19 @@ class UsersController extends Controller
     public function edit(Request $request) {
       $id = $request->route('id');
 
+      /**
+       * DB facade
+       */
+      //$user = DB::select('select * from user where id='.$id);
+
+      /**
+       * 查询构造器
+       */
       //$user = DB::table('user')->where('id', $id)->first();
+
+      /**
+       * Eloquent ORM
+       */
       $user = User::where('id', $id)->first();
 
       return view('users.edit', ['user'=>$user]);
@@ -127,6 +177,27 @@ class UsersController extends Controller
       $input = $request->all();
 
       date_default_timezone_set('PRC');
+
+      /**
+       * DB facade
+       */
+      // $num = DB::update('update user set name="'.$input['name'].'", password="'.$input['password'].'", email="'.$input['email'].'", updated_at="'.date('Y-m-d H:i:s').'" where id='.$input['id']);
+      // if($num) {
+      //   return response()->json([
+      //     'code'=>200,
+      //     'msg'=>'修改用户成功'
+      //   ]);
+      // }
+      // else {
+      //   return response()->json([
+      //     'code'=>-1,
+      //     'msg'=>'修改用户失败'
+      //   ]);
+      // }
+
+      /**
+       * 查询构造器
+       */
       // $bool = DB::table('user')->where('id', $input['id'])->update([
       //   'name'=>$input['name'],
       //   'password'=>$input['password'],
@@ -145,6 +216,10 @@ class UsersController extends Controller
       //     'msg'=>'修改用户失败'
       //   ]);
       // }
+
+      /**
+       * Eloquent ORM
+       */
       try {
         DB::beginTransaction();
 
@@ -177,6 +252,26 @@ class UsersController extends Controller
       $data = $request->all();
       //var_dump($data['id']);
 
+      /**
+       * DB facade
+       */
+      // $num = DB::delete('delete from user where id='.$data['id']);
+      // if($num) {
+      //   return response()->json([
+      //     'code'=>200,
+      //     'msg'=>'删除用户成功'
+      //   ]);
+      // }
+      // else {
+      //   return response()->json([
+      //     'code'=>-1,
+      //     'msg'=>'删除用户失败'
+      //   ]);
+      // }
+
+      /**
+       * 查询构造器
+       */
       // $bool = DB::table('user')->where('id', '=', $data['id'])->delete();
       // if($bool) {
       //   return response()->json([
@@ -190,6 +285,10 @@ class UsersController extends Controller
       //     'msg'=>'删除用户失败'
       //   ]);
       // }
+
+      /**
+       * Eloquent ORM
+       */
       try {
         DB::beginTransaction();
 
