@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,8 +17,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-      $users = DB::table('user')->get();
-
+      //$users = DB::select('select * from user');
+      //$users = DB::table('user')->get();
+      $users = User::all();
       return view('users.list', ['users'=>$users]);
     }
 
@@ -59,20 +61,42 @@ class UsersController extends Controller
       }
 
       date_default_timezone_set('PRC');
-      $bool = DB::table('user')->insert([
-        'name'=>$input['name'],
-        'password'=>bcrypt($input['password']),
-        'email'=>$input['email'],
-        'created_at'=>date('Y-m-d H:i:s'),
-        'updated_at'=>date('Y-m-d H:i:s')
-      ]);
-      if($bool) {
+      // $bool = DB::table('user')->insert([
+      //   'name'=>$input['name'],
+      //   'password'=>bcrypt($input['password']),
+      //   'email'=>$input['email'],
+      //   'created_at'=>date('Y-m-d H:i:s'),
+      //   'updated_at'=>date('Y-m-d H:i:s')
+      // ]);
+      // if($bool) {
+      //   return response()->json([
+      //     'code'=>200,
+      //     'msg'=>'新增用户成功'
+      //   ]);
+      // }
+      // else {
+      //   return response()->json([
+      //     'code'=>-1,
+      //     'msg'=>'新增用户失败'
+      //   ]);
+      // }
+      try {
+        DB::beginTransaction();
+
+        User::insert([
+          'name'=>$input['name'],
+          'password'=>$input['password'],
+          'email'=>$input['email'],
+          'created_at'=>date('Y-m-d H:i:s'),
+          'updated_at'=>date('Y-m-d H:i:s')
+        ]);
+        DB::commit();
         return response()->json([
           'code'=>200,
           'msg'=>'新增用户成功'
         ]);
-      }
-      else {
+      } catch(\Exception $e) {
+        DB::rollBack();
         return response()->json([
           'code'=>-1,
           'msg'=>'新增用户失败'
@@ -88,7 +112,8 @@ class UsersController extends Controller
     public function edit(Request $request) {
       $id = $request->route('id');
 
-      $user = DB::table('user')->where('id', $id)->first();
+      //$user = DB::table('user')->where('id', $id)->first();
+      $user = User::where('id', $id)->first();
 
       return view('users.edit', ['user'=>$user]);
     }
@@ -102,19 +127,40 @@ class UsersController extends Controller
       $input = $request->all();
 
       date_default_timezone_set('PRC');
-      $bool = DB::table('user')->where('id', $input['id'])->update([
-        'name'=>$input['name'],
-        'password'=>$input['password'],
-        'email'=>$input['email'],
-        'updated_at'=>date('Y-m-d H:i:s')
-      ]);
-      if($bool) {
+      // $bool = DB::table('user')->where('id', $input['id'])->update([
+      //   'name'=>$input['name'],
+      //   'password'=>$input['password'],
+      //   'email'=>$input['email'],
+      //   'updated_at'=>date('Y-m-d H:i:s')
+      // ]);
+      // if($bool) {
+      //   return response()->json([
+      //     'code'=>200,
+      //     'msg'=>'修改用户成功'
+      //   ]);
+      // }
+      // else {
+      //   return response()->json([
+      //     'code'=>-1,
+      //     'msg'=>'修改用户失败'
+      //   ]);
+      // }
+      try {
+        DB::beginTransaction();
+
+        User::where('id', $input['id'])->update([
+          'name'=>$input['name'],
+          'password'=>$input['password'],
+          'email'=>$input['email'],
+          'updated_at'=>date('Y-m-d H:i:s')
+        ]);
+        DB::commit();
         return response()->json([
           'code'=>200,
           'msg'=>'修改用户成功'
         ]);
-      }
-      else {
+      } catch(\Exception $e) {
+        DB::rollBack();
         return response()->json([
           'code'=>-1,
           'msg'=>'修改用户失败'
@@ -131,14 +177,30 @@ class UsersController extends Controller
       $data = $request->all();
       //var_dump($data['id']);
 
-      $bool = DB::table('user')->where('id', '=', $data['id'])->delete();
-      if($bool) {
+      // $bool = DB::table('user')->where('id', '=', $data['id'])->delete();
+      // if($bool) {
+      //   return response()->json([
+      //     'code'=>200,
+      //     'msg'=>'删除用户成功'
+      //   ]);
+      // }
+      // else {
+      //   return response()->json([
+      //     'code'=>-1,
+      //     'msg'=>'删除用户失败'
+      //   ]);
+      // }
+      try {
+        DB::beginTransaction();
+
+        User::where('id', '=', $data['id'])->delete();
+        DB::commit();
         return response()->json([
           'code'=>200,
           'msg'=>'删除用户成功'
         ]);
-      }
-      else {
+      } catch(\Exception $e) {
+        DB::rollBack();
         return response()->json([
           'code'=>-1,
           'msg'=>'删除用户失败'
