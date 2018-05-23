@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Tool\Helper;
+use App\Tool\M3Result;
+use App\Tool\ErrorCode;
 
 class UsersController extends Controller
 {
@@ -55,22 +57,13 @@ class UsersController extends Controller
       $input = $request->all();
 
       if(mb_strlen($input['name']) == 0) {
-        return response()->json([
-          'code'=>10008,
-          'msg'=>'用户名不能为空'
-        ]);
+        return M3Result::init(ErrorCode::$invalid_name);
       }
       if(mb_strlen($input['password']) == 0) {
-        return response()->json([
-          'code'=>10008,
-          'msg'=>'密码不能为空'
-        ]);
+        return M3Result::init(ErrorCode::$invalid_password);
       }
       if(mb_strlen($input['email']) == 0) {
-        return response()->json([
-          'code'=>10008,
-          'msg'=>'email不能为空'
-        ]);
+        return M3Result::init(ErrorCode::$invalid_email);
       }
 
       /**
@@ -129,16 +122,10 @@ class UsersController extends Controller
           'updated_at'=>date('Y-m-d H:i:s')
         ]);
         DB::commit();
-        return response()->json([
-          'code'=>200,
-          'msg'=>'新增用户成功'
-        ]);
+        return M3Result::init([200, '新增用户成功']);
       } catch(\Exception $e) {
         DB::rollBack();
-        return response()->json([
-          'code'=>-1,
-          'msg'=>'新增用户失败'
-        ]);
+        return M3Result::init([-1, '新增用户失败']);
       }
     }
 
@@ -230,16 +217,10 @@ class UsersController extends Controller
           'updated_at'=>date('Y-m-d H:i:s')
         ]);
         DB::commit();
-        return response()->json([
-          'code'=>200,
-          'msg'=>'修改用户成功'
-        ]);
+        return M3Result::init([200, '修改用户成功']);
       } catch(\Exception $e) {
         DB::rollBack();
-        return response()->json([
-          'code'=>-1,
-          'msg'=>'修改用户失败'
-        ]);
+        return M3Result::init([-1, '修改用户失败']);
       }
     }
 
@@ -294,16 +275,10 @@ class UsersController extends Controller
 
         User::where('id', '=', $data['id'])->delete();
         DB::commit();
-        return response()->json([
-          'code'=>200,
-          'msg'=>'删除用户成功'
-        ]);
+        return M3Result::init([200, '删除用户成功']);
       } catch(\Exception $e) {
         DB::rollBack();
-        return response()->json([
-          'code'=>-1,
-          'msg'=>'删除用户失败'
-        ]);
+        return M3Result::init([-1, '删除用户失败']);
       }
     }
 }
