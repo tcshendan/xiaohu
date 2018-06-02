@@ -31,5 +31,6 @@ class CreateUserTable extends Migration
     public function down()
     {
         //
+        Schema::drop('user');
     }
 }

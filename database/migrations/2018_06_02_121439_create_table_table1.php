@@ -34,6 +34,6 @@ class CreateTableTable1 extends Migration
     public function down()
     {
         //
-        Schema::drop('table1');
+        Schema::drop('table_1');
     }
 }
