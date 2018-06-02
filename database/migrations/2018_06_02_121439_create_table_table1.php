@@ -19,6 +19,8 @@ class CreateTableTable1 extends Migration
           //$table->unsignedInteger('id')->autoIncrement();
           $table->increments('id');
           $table->string('name')->nullable();
+          $table->text('article');
+          $table->string('username', 12)->unique();
         });
 
         Schema::rename('table1', 'table_1');
