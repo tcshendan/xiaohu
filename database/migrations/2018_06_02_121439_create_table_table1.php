@@ -23,7 +23,7 @@ class CreateTableTable1 extends Migration
           $table->string('username', 12)->unique();
         });
 
-        Schema::rename('table1', 'table_1');
+        //Schema::rename('table1', 'table_1');
     }
 
     /**
@@ -34,6 +34,7 @@ class CreateTableTable1 extends Migration
     public function down()
     {
         //
-        Schema::drop('table_1');
+        Schema::drop('table1');
+        //Schema::drop('table_1');
     }
 }
